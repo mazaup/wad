@@ -1,0 +1,99 @@
+npm init -y 
+
+index.html
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>My Static Website</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Welcome to Node.js Website</h1>
+
+        <p>This is a static website served using Node.js</p>
+
+        <button>Visit</button>
+
+    </div>
+
+</body>
+</html>
+
+SERVER.JS
+const http = require('http');
+
+const fs = require('fs');
+
+const server = http.createServer((req, res) => {
+
+    if(req.url == "/"){
+
+        fs.readFile("index.html", (err, data) => {
+
+            res.writeHead(200, {'Content-Type': 'text/html'});
+
+            res.write(data);
+
+            res.end();
+
+        });
+
+    }
+
+    else if(req.url == "/style.css"){
+
+        fs.readFile("style.css", (err, data) => {
+
+            res.writeHead(200, {'Content-Type': 'text/css'});
+
+            res.write(data);
+
+            res.end();
+
+        });
+
+    }
+
+});
+
+server.listen(3000, () => {
+
+    console.log("Server running on http://localhost:3000");
+
+});
+
+STYLE.CSS 
+body{
+    font-family: Arial;
+    background: #f2f2f2;
+}
+
+.container{
+    width: 400px;
+    margin: 100px auto;
+    background: white;
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px gray;
+}
+
+h1{
+    color: darkblue;
+}
+
+button{
+    padding: 10px 20px;
+    background: blue;
+    color: white;
+    border: none;
+}
+
+node server.js
