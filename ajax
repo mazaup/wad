@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Registration Form</title>
+
+    <style>
+
+        body{
+            font-family: Arial;
+            margin: 30px;
+        }
+
+        input{
+            padding: 8px;
+            width: 250px;
+            margin: 5px;
+        }
+
+        button{
+            padding: 10px;
+            background: blue;
+            color: white;
+            border: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h2>User Registration</h2>
+
+<input type="text" id="name" placeholder="Enter Name">
+<br><br>
+
+<input type="email" id="email" placeholder="Enter Email">
+<br><br>
+
+<button onclick="register()">
+Register
+</button>
+
+<hr>
+
+<h2>Registered Users</h2>
+
+<div id="data"></div>
+
+<script>
+
+function register(){
+
+    let name = document.getElementById("name").value;
+
+    let email = document.getElementById("email").value;
+
+    let user = {
+        name:name,
+        email:email
+    };
+
+    // Get old users
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // Add new user
+    users.push(user);
+
+    // Save again
+    localStorage.setItem("users", JSON.stringify(users));
+
+    // AJAX POST
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("POST","https://jsonplaceholder.typicode.com/posts",true);
+
+    xhr.send(JSON.stringify(user));
+
+    showData();
+
+}
+
+function showData(){
+
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    let output = "";
+
+    users.forEach(function(user){
+
+        output += `
+            <p>
+                Name : ${user.name}
+                <br>
+                Email : ${user.email}
+            </p>
+
+            <hr>
+        `;
+
+    });
+
+    document.getElementById("data").innerHTML = output;
+
+}
+
+// Show old data automatically
+showData();
+
+</script>
+
+</body>
+</html>
